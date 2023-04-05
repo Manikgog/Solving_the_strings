@@ -18,23 +18,24 @@ int main() {
 	//SetConsoleCP(1251); // установка кодовой страницы на ввод текста
 	srand(time(NULL));
 	
-	//{
-	///*
-	//	The function accepts a string, and then returns a string consisting of the same characters with spaces between them.
-	//Example of a function call:
-	//std::cout << spaces_str("Hello!");
-	////// on the Hello ! screen
-	//
-	//	Функция принимает строку, после чего возвращает строку, состоящую из тех же символов, между которыми стоят пробелы.
-	//Пример вызова функции:
-	//std::cout << spaces_str("Hello!");
-	//// на экране H e l l o !
-	//*/
-	//
-	//std::cout << "Exercise 1.\n";
-	//std::string str = "Hello!";
-	//std::cout << spaces_str(str) << std::endl;
-	//}
+	{
+		/*
+			The function accepts a string, and then returns a string consisting of the same characters with spaces between them.
+		Example of a function call:
+		std::cout << spaces_str("Hello!");
+		//// on the Hello ! screen
+	
+			Функция принимает строку, после чего возвращает строку, состоящую из тех же символов, между которыми стоят пробелы.
+		Пример вызова функции:
+		std::cout << spaces_str("Hello!");
+		// на экране H e l l o !
+		*/
+	
+		/*std::cout << "Exercise 1.\nEnter the string -> ";
+		std::string str;
+		std::getline(std::cin, str);
+		std::cout << spaces_str(str) << std::endl;*/
+	}
 	
 	/*
 		Write a function to check spam in the passed string. 
@@ -47,13 +48,18 @@ int main() {
 	считать следующие словосочетания: 100% free, sales increase, 
 	only today. Функция должна быть нерегистрозависимой.
 	*/
-	/*{
-		std::string str = "Hello!sales increaseworld!";
-		if(spam_check(str))
-			std::cout << str << " - spam.\n";
-		else
-			std::cout << str << " - not a spam.\n";
-	}*/
+	{
+		//std::cout << "Exercise 2.\n";
+		////std::cout << "Enter the string -> ";
+		//std::string str = "Hello!sales increaseworld!";
+		////std::getline(std::cin, str);
+		//if(spam_check(str))
+		//	std::cout << str << " <- spam.\n";
+		//else
+		//	std::cout << str << " <- not a spam.\n";
+	}
+
+	
 
 	/*
 		The user string in the format of the URL of the site. The program outputs the protocol, domain name and path to the page to him.
@@ -73,11 +79,12 @@ int main() {
 	Programmer/buy
 	*/
 
-	//{
-	//	//std::string str = "https://ekat.top-academy.ru/Programmer/buy";
-	//	std::string str = "https://www.youtube.com/watch?v=W--Jn9h8feQ";
-	//	print_email(str);
-	//}
+	{
+		std::cout << "Exercise 3.\n";
+		//std::string str = "https://ekat.top-academy.ru/Programmer/buy";
+		std::string URL = "https://www.youtube.com/watch?v=W--Jn9h8feQ";
+		print_email(URL);
+	}
 
 	/*
 		Write a function that accepts a string that is the desired 
@@ -102,11 +109,11 @@ int main() {
 	std::cout << lowerCamelCase("Oranges");
 	// на экране oranges
 	*/
-	{
+	/*{
 		std::cout << lowerCamelCase("Hello   World") << std::endl;
 		std::cout << lowerCamelCase("my old friend") << std::endl;
 		std::cout << lowerCamelCase("Oranges") << std::endl;
-	}
+	}*/
 
 
 
@@ -133,9 +140,23 @@ std::string lowerCamelCase(std::string str) {
 
 
 void print_email(std::string str) {
-	std::string protocol;
-	std::string domain_name;
-	int i = 0;
+	
+	// teaching option
+	// преподавательский вариант
+	int domain_index = str.find("://") + 3;
+	int path_index = str.find("/", domain_index) + 1;
+
+	std::string protocol = str.substr(0, domain_index - 3);
+	std::string domain_name = str.substr(domain_index, path_index - 1 - domain_index);
+	std::string path = str.substr(path_index);
+
+	std::cout << "protocol -> " << protocol << std::endl;
+	std::cout << "domain_name -> " << domain_name << std::endl;
+	std::cout << "path -> " << path << std::endl;
+
+	// my option
+	// мой вариант
+	/*int i = 0;
 	while(str[i] != ':') {
 		protocol += str[i];
 		i++;
@@ -149,40 +170,56 @@ void print_email(std::string str) {
 	std::cout << domain_name << std::endl;
 	i++;
 	while (i < str.length()) {
-		std::cout << str[i];
+		path += str[i];
 		i++;
 	}
-	std::cout << std::endl;
+	std::cout << path << std::endl;
+	std::cout << std::endl;*/
 }
 
 bool spam_check(std::string str) {
-	std::string arr[3]{ "100% free", "sales increase", "only today" };
+	static const int spams_number = 4;
+	static std::string spams[spams_number]{ "100% free", "sales increase", "only today", "Black Friday 7.04.23"};
 	for (size_t i = 0; i < str.length(); i++) {
 		str[i] = std::tolower(str[i]);
 	}
 	//std::cout << str << std::endl;
-	for (size_t i = 0; i < 3; i++) {
+	// teacher's solution option
+	// вариант решения преподавателя
+	for (size_t i = 0; i < spams_number; i++) {
+		if (str.find(spams[i]) < str.length())
+			return true;
+	}
+
+	// my solution
+	// мой вариант
+	/*for (size_t i = 0; i < spams_number; i++) {
 		for (size_t j = 0; j < str.length(); j++) {
-			if (str[j] == arr[i][0]) {
+			if (str[j] == spams[i][0]) {
 				std::string word;
-				for (size_t k = j; (k < arr[i].length() + j) && (k < str.length()); k++) {
+				for (size_t k = j; (k < spams[i].length() + j) && (k < str.length()); k++) {
 					word += str[k];
 				}
-				if (word == arr[i])
+				if (word == spams[i])
 					return true;
 			}
 		}
-	}
+	}*/
+
+
 	return false;
 }
 
 std::string spaces_str(std::string& str) {
-	std::string str_new;
+	std::string result;
 	for (size_t i = 0; i < str.length(); i++) {
-		str_new += str[i];
-		str_new += " ";
+		result += str[i];
+		if (i == str.length() - 1) {
+			break;
+		}
+		result += ' ';
 	}
-	return str_new;
+	return result;
 }
 
 
